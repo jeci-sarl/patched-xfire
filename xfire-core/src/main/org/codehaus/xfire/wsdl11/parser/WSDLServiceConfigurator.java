@@ -224,34 +224,30 @@ public class WSDLServiceConfigurator
                 String opName = bindingOperation.getOperation().getName();
                 OperationInfo opInfo = serviceInfo.getOperation(opName);
                 
-                if (opInfo == null)
+                if (opInfo != null)
                 {
-                    throw new XFireRuntimeException("Could not find operation " + opName + " in the service model.");
-                }
+                    ann.visit(bindingOperation, opInfo);
                 
-                ann.visit(bindingOperation, opInfo);
-                
-                ann.visit(bindingOperation.getBindingInput(), 
+                    ann.visit(bindingOperation.getBindingInput(), 
                           bindingOperation.getOperation().getInput(),
                           opInfo.getInputMessage());
                 
-                if (opInfo.hasOutput())
-                {
-                    ann.visit(bindingOperation.getBindingOutput(), 
-                              bindingOperation.getOperation().getOutput(),
-                              opInfo.getOutputMessage());
-                }
-                
-                Collection bindingFaults = bindingOperation.getBindingFaults().values();
-                for (Iterator iterator2 = bindingFaults.iterator(); iterator2.hasNext();)
-                {
-                    BindingFault bindingFault = (BindingFault) iterator2.next();
-                    Fault fault = bindingOperation.getOperation().getFault(bindingFault.getName());
-                    FaultInfo faultInfo = opInfo.getFault(fault.getName());
-                    
-                    ann.visit(bindingFault, fault, faultInfo);
-                }
+                    if (opInfo.hasOutput())
+                    {
+                        ann.visit(bindingOperation.getBindingOutput(), 
+                                  bindingOperation.getOperation().getOutput(),
+                                  opInfo.getOutputMessage());
+                    }
+                    Collection bindingFaults = bindingOperation.getBindingFaults().values();
+                    for (Iterator iterator2 = bindingFaults.iterator(); iterator2.hasNext();)
+                    {
+                        BindingFault bindingFault = (BindingFault) iterator2.next();
+                        Fault fault = bindingOperation.getOperation().getFault(bindingFault.getName());
+                        FaultInfo faultInfo = opInfo.getFault(fault.getName());
 
+                        ann.visit(bindingFault, fault, faultInfo);
+                    }
+                }    
             }
         }
     }
