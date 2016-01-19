@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>xfire-core</artifactId>
   <name>XFire Core</name>
-  <version>1.2.6-patch-671</version>
+  <version>1.2.6-upd-1</version>
   
   <distributionManagement>
     <repository>

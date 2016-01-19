@@ -23,12 +23,14 @@ import org.jdom.Element;
 public class Soap11FaultSerializer
     implements MessageSerializer
 {
-  //  private StaxBuilder builder = new StaxBuilder();
-    
     public void readMessage(InMessage message, MessageContext context)
         throws XFireFault
     {
         XFireFault fault = new XFireFault();
+        
+        if(message == null) {
+            throw new XFireFault("Could not parse message, message is null.", XFireFault.SENDER);
+        }
 
         XMLStreamReader reader = message.getXMLStreamReader();
 
